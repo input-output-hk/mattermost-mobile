@@ -229,7 +229,7 @@ export default class SelectServer extends PureComponent {
         const {formatMessage} = this.context.intl;
         const {config, license} = props;
         const samlEnabled = config.EnableSaml === 'true' && license.IsLicensed === 'true' && license.SAML === 'true';
-        const gitlabEnabled = config.EnableSignUpWithGitLab === 'true';
+        const gitlabEnabled = true || config.EnableSignUpWithGitLab === 'true';
         const o365Enabled = config.EnableSignUpWithOffice365 === 'true' && license.IsLicensed === 'true' && license.Office365OAuth === 'true';
 
         let options = 0;
