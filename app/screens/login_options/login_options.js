@@ -4,12 +4,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {intlShape} from 'react-intl';
-import {Dimensions, Image, ScrollView, StyleSheet, Text} from 'react-native';
+import {Dimensions, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import Button from 'react-native-button';
 
 import {goToScreen} from '@actions/navigation';
 import LocalConfig from '@assets/config';
 import gitlab from '@assets/images/gitlab.png';
+import googleLogo from "@assets/images/google_logo.png";
 import logo from '@assets/images/logo.png';
 import FormattedText from '@components/formatted_text';
 import StatusBar from '@components/status_bar';
@@ -17,7 +18,6 @@ import {paddingHorizontal as padding} from '@components/safe_area_view/iphone_x_
 import {ViewTypes} from '@constants';
 import globalEventHandler from '@init/global_event_handler';
 import {preventDoubleTap} from '@utils/tap';
-
 import {GlobalStyles} from 'app/styles';
 
 export default class LoginOptions extends PureComponent {
@@ -177,8 +177,13 @@ export default class LoginOptions extends PureComponent {
     };
 
     renderGitlabOption = () => {
-        return (
-            <Button
+        const { config } = this.props;
+
+        const forceHideFromLocal = LocalConfig.HideGitLabLoginExperimental;
+
+        if (!forceHideFromLocal && config.EnableSignUpWithGitLab === 'true') {
+            return (
+                <Button
                 key='gitlab'
                 onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GITLAB))}
                 containerStyle={[
@@ -199,9 +204,10 @@ export default class LoginOptions extends PureComponent {
                 >
                     {'GitLab'}
                 </Text>
-            </Button>
-        );
-    };
+            </Button>);
+        };
+        return null;
+    }
 
     renderO365Option = () => {
         const {config, license} = this.props;
@@ -245,6 +251,60 @@ export default class LoginOptions extends PureComponent {
         }
 
         return null;
+    };
+
+    renderGoogleOption = () => {
+        const { config } = this.props;
+        
+        return (
+            config.EnableSignUpWithGoogle === 'true' && <Button
+                key="google"
+                onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GOOGLE))}
+                containerStyle={[
+                    GlobalStyles.signupButton,
+                    {
+                        backgroundColor: "#4285F4",
+                        borderColor: "transparent",
+                        borderWidth: 0,
+                        padding: 2,
+                        alignItems: "stretch",
+                    },
+                ]}
+            >
+                <View
+                    style={{
+                        backgroundColor: "#FFF",
+                        marginRight: 5,
+                        padding: 10,
+                    }}
+                >
+                    <Image
+                        source={googleLogo}
+                        style={{
+                            height: 30,
+                            width: 30,
+                            backgroundColor: "#FFF",
+                            alignSelf: "center",
+                        }}
+                    />
+                </View>
+
+                <View
+                    style={{
+                        flex: 1,
+                    }}
+                >
+                    <Text
+                        style={[
+                            GlobalStyles.signupButtonText,
+                            { color: "white", marginLeft: -30 },
+                        ]}
+                    >
+                        {"Google"}
+                    </Text>
+                </View>
+            </Button>
+        );
     };
 
     renderSamlOption = () => {
@@ -332,6 +392,7 @@ export default class LoginOptions extends PureComponent {
                 {this.renderEmailOption()}
                 {this.renderLdapOption()}
                 {this.renderGitlabOption()}
+                {this.renderGoogleOption()}
                 {this.renderSamlOption()}
                 {this.renderO365Option()}
             </ScrollView>
