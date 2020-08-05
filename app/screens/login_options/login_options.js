@@ -4,13 +4,20 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {intlShape} from 'react-intl';
-import {Dimensions, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+    Dimensions,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 import Button from 'react-native-button';
 
 import {goToScreen} from '@actions/navigation';
 import LocalConfig from '@assets/config';
 import gitlab from '@assets/images/gitlab.png';
-import googleLogo from "@assets/images/google_logo.png";
+import googleLogo from '@assets/images/google_logo.png';
 import logo from '@assets/images/logo.png';
 import FormattedText from '@components/formatted_text';
 import StatusBar from '@components/status_bar';
@@ -177,37 +184,43 @@ export default class LoginOptions extends PureComponent {
     };
 
     renderGitlabOption = () => {
-        const { config } = this.props;
+        const {config} = this.props;
 
         const forceHideFromLocal = LocalConfig.HideGitLabLoginExperimental;
 
         if (!forceHideFromLocal && config.EnableSignUpWithGitLab === 'true') {
             return (
                 <Button
-                key='gitlab'
-                onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GITLAB))}
-                containerStyle={[
-                    GlobalStyles.signupButton,
-                    {
-                        backgroundColor: '#548',
-                        borderColor: 'transparent',
-                        borderWidth: 0,
-                    },
-                ]}
-            >
-                <Image
-                    source={gitlab}
-                    style={{height: 18, marginRight: 5, width: 18}}
-                />
-                <Text
-                    style={[GlobalStyles.signupButtonText, {color: 'white'}]}
+                    key='gitlab'
+                    onPress={preventDoubleTap(() =>
+                        this.goToSSO(ViewTypes.GITLAB),
+                    )}
+                    containerStyle={[
+                        GlobalStyles.signupButton,
+                        {
+                            backgroundColor: '#548',
+                            borderColor: 'transparent',
+                            borderWidth: 0,
+                        },
+                    ]}
                 >
-                    {'GitLab'}
-                </Text>
-            </Button>);
-        };
+                    <Image
+                        source={gitlab}
+                        style={{height: 18, marginRight: 5, width: 18}}
+                    />
+                    <Text
+                        style={[
+                            GlobalStyles.signupButtonText,
+                            {color: 'white'},
+                        ]}
+                    >
+                        {'GitLab'}
+                    </Text>
+                </Button>
+            );
+        }
         return null;
-    }
+    };
 
     renderO365Option = () => {
         const {config, license} = this.props;
@@ -254,56 +267,60 @@ export default class LoginOptions extends PureComponent {
     };
 
     renderGoogleOption = () => {
-        const { config } = this.props;
-        
-        return (
-            config.EnableSignUpWithGoogle === 'true' && <Button
-                key="google"
-                onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GOOGLE))}
-                containerStyle={[
-                    GlobalStyles.signupButton,
-                    {
-                        backgroundColor: "#4285F4",
-                        borderColor: "transparent",
-                        borderWidth: 0,
-                        padding: 2,
-                        alignItems: "stretch",
-                    },
-                ]}
-            >
-                <View
-                    style={{
-                        backgroundColor: "#FFF",
-                        marginRight: 5,
-                        padding: 10,
-                    }}
-                >
-                    <Image
-                        source={googleLogo}
-                        style={{
-                            height: 30,
-                            width: 30,
-                            backgroundColor: "#FFF",
-                            alignSelf: "center",
-                        }}
-                    />
-                </View>
+        const {config} = this.props;
 
-                <View
-                    style={{
-                        flex: 1,
-                    }}
+        return (
+            config.EnableSignUpWithGoogle === 'true' && (
+                <Button
+                    key='google'
+                    onPress={preventDoubleTap(() =>
+                        this.goToSSO(ViewTypes.GOOGLE),
+                    )}
+                    containerStyle={[
+                        GlobalStyles.signupButton,
+                        {
+                            backgroundColor: '#4285F4',
+                            borderColor: 'transparent',
+                            borderWidth: 0,
+                            padding: 2,
+                            alignItems: 'stretch',
+                        },
+                    ]}
                 >
-                    <Text
-                        style={[
-                            GlobalStyles.signupButtonText,
-                            { color: "white", marginLeft: -30 },
-                        ]}
+                    <View
+                        style={{
+                            backgroundColor: '#FFF',
+                            marginRight: 5,
+                            padding: 10,
+                        }}
                     >
-                        {"Google"}
-                    </Text>
-                </View>
-            </Button>
+                        <Image
+                            source={googleLogo}
+                            style={{
+                                height: 30,
+                                width: 30,
+                                backgroundColor: '#FFF',
+                                alignSelf: 'center',
+                            }}
+                        />
+                    </View>
+
+                    <View
+                        style={{
+                            flex: 1,
+                        }}
+                    >
+                        <Text
+                            style={[
+                                GlobalStyles.signupButtonText,
+                                {color: 'white', marginLeft: -30},
+                            ]}
+                        >
+                            {'Google'}
+                        </Text>
+                    </View>
+                </Button>
+            )
         );
     };
 
