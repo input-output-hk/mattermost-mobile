@@ -89,6 +89,10 @@ class SSO extends PureComponent {
             this.loginUrl = `${props.serverUrl}/oauth/gitlab/mobile_login`;
             this.completeUrlPath = '/signup/gitlab/complete';
             break;
+        case ViewTypes.GOOGLE:
+            this.loginUrl = `${props.serverUrl}/oauth/google/login`;
+            this.completeUrlPath = '/signup/google/complete';
+            break;
         case ViewTypes.SAML:
             this.loginUrl = `${props.serverUrl}/login/sso/saml?action=mobile`;
             this.completeUrlPath = '/login/sso/saml';
@@ -250,6 +254,7 @@ class SSO extends PureComponent {
                     onMessage={messagingEnabled ? this.onMessage : null}
                     useSharedProcessPool={false}
                     cacheEnabled={false}
+                    userAgent='Mozilla/5.0 Google'
                 />
             );
         }
